@@ -21,7 +21,7 @@ st.image(image, width = 500)
 
 expander_bar = st.beta_expander("About")
 expander_bar.markdown("""
-* **Python libraries: streamlit, PIL, pandas, base 64, matplotlib, numpy, BeautifulSoup, requests, json**
+* **Python libraries: streamlit, PIL, pandas, base 64, matplotlib, BeautifulSoup, requests, json**
 * **Source of data: [CoinMarketCap](http://coinmarketcap.com)**
 * **Credits to [Bryan Feng](https://medium.com/@bryanf), the web scraper is adapted from his medium article *[Web Scraping Crypto Prices With Python](https://towardsdatascience.com/web-scraping-crypto-prices-with-python-41072ea5b5bf)* **
 """)
