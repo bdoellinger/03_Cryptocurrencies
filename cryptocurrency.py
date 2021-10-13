@@ -58,7 +58,7 @@ def load_data():
     market_cap = []
     volume_24h = []
 
-    for coin_number in range(1, min(100, len(listings))):
+    for coin_number in range(1, min(101, len(listings))):
         coin_name.append(listings[coin_number][label2id["slug"]])
         coin_symbol.append(listings[coin_number][label2id["symbol"]])
         price.append(listings[coin_number][label2id["quote.USD.price"]])
