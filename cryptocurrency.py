@@ -43,13 +43,12 @@ def load_data():
     soup = BeautifulSoup(cmc.content, "html.parser")
 
     data = soup.find("script", id="__NEXT_DATA__", type="application/json")
-    coins = {}
     coin_data = json.loads(data.contents[0])
-    listings = coin_data["props"]["initialState"]["cryptocurrency"]['listingLatest']['data']
-    for listing in listings:
-        print(listing["id"])
-        coins[str(listing["id"])] = listing["slug"]
-
+    
+    # listings slightly changed from march 2021 to oct 2021, might need further readjustment should anything on coinmarketcap change 
+    listings = coin_data["props"]["initialState"]["cryptocurrency"]["listingLatest"]["data"]
+    label2id = {label: idx for idx, label in enumerate(listings[0]["keysArr"])}    # first entry in listings consists of labels for each column
+    
     coin_name = []
     coin_symbol = []
     price = []
@@ -59,15 +58,15 @@ def load_data():
     market_cap = []
     volume_24h = []
 
-    for listing in listings:
-        coin_name.append(listing["slug"])
-        coin_symbol.append(listing["symbol"])
-        price.append(listing["quote"][currency_price_unit]["price"])
-        percent_change_1h.append(listing["quote"][currency_price_unit]["percentChange1h"])
-        percent_change_24h.append(listing["quote"][currency_price_unit]["percentChange24h"])
-        percent_change_7d.append(listing["quote"][currency_price_unit]["percentChange7d"])
-        market_cap.append(listing["quote"][currency_price_unit]["marketCap"])
-        volume_24h.append(listing["quote"][currency_price_unit]["volume24h"])
+    for coin_number in range(1, min(100, len(listings))):
+        coin_name.append(listings[coin_number][label2id["slug"]])
+        coin_symbol.append(listings[coin_number][label2id["symbol"]])
+        price.append(listings[coin_number][label2id["quote.USD.price"]])
+        percent_change_1h.append(listings[coin_number][label2id["quote.USD.percentChange1h"]])
+        percent_change_24h.append(listings[coin_number][label2id["quote.USD.percentChange24h"]])
+        percent_change_7d.append(listings[coin_number][label2id["quote.USD.percentChange7d"]])
+        market_cap.append(listings[coin_number][label2id["quote.USD.marketCap"]])
+        volume_24h.append(listings[coin_number][label2id["quote.USD.volume24h"]])
     
     df = pd.DataFrame(columns=["coin_name","coin_symbol","price","percent_change_1h","percent_change_24h","percent_change_7d","market_cap","volume_24h"])
     df["coin_name"] = coin_name
